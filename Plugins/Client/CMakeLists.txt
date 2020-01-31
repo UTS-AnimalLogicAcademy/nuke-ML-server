@@ -46,3 +46,5 @@ if (WIN32)
         ws2_32.lib  # include windows socket library
     )
 endif (WIN32)
+
+install(TARGETS MLClient DESTINATION lib/)
