@@ -1,4 +1,4 @@
-# CMakeLists.txt for Machine Learning Plug-in: MLClient
+# Cmakelists.txt for Machine Learning Plug-in: MLClient
 
 # Setting up MLClient sources and dependencies
 set (ML_CLIENT_SOURCES
@@ -24,6 +24,11 @@ if(NOT DDIMAGE_LIBRARY)
     message(FATAL_ERROR "DDImage library not found.")
 endif()
 
+# the position of this matters - must be before add_library
+# this also works but is less atomic:
+# set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH "${NUKE_INSTALL_PATH}")
+
 # Create MLClient.so shared library
 add_library(MLClient SHARED
     ${ML_CLIENT_SOURCES}
@@ -36,6 +41,8 @@ target_include_directories(MLClient PRIVATE
     ${Protobuf_INCLUDE_DIR}
 )
 
+install(TARGETS MLClient DESTINATION lib/)
+
 target_link_libraries(MLClient
     ${PROTOBUF_LIBRARY}
     ${DDIMAGE_LIBRARY}
@@ -47,4 +54,3 @@ if (WIN32)
     )
 endif (WIN32)
 
-install(TARGETS MLClient DESTINATION lib/)
